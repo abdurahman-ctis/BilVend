@@ -29,7 +29,7 @@ public class loginPage extends AppCompatActivity {
     // constants
     static final String CHAT_PREFS = "ChatPrefs";
     static final String DISPLAY_NAME_KEY = "username";
-
+//sef
     // properties
     TextView signUp;
     EditText email;
