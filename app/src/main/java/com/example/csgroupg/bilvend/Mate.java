@@ -50,10 +50,10 @@ public class Mate extends Advertisement {
 
     /**
      *This method returns 0 if it is dorm, 1 if it is a flat!
-     * @param type
+     * @param dormOrFlat
      */
-    public void setPropertyType( boolean type) {
-        this.dorOrFlat = dormOrFlat;
+    public void setPropertyType( boolean dormOrFlat) {
+        this.dormOrFlat = dormOrFlat;
     }
 
     public String getPropertyType() {
