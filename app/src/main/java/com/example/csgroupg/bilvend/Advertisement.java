@@ -41,7 +41,7 @@ public abstract class Advertisement {
         return name;
     }
 
-    public void setUploadDate(Date uploadDate) {
+    public void setUploadDate( Date uploadDate) {
         this.uploadDate = uploadDate;
     }
 
@@ -57,7 +57,7 @@ public abstract class Advertisement {
         return description;
     }
 
-    public void setCategoryType(int categoryType) {
+    public void setCategoryType( int categoryType) {
         this.categoryType = categoryType;
     }
 
@@ -65,7 +65,7 @@ public abstract class Advertisement {
         return categoryType;
     }
 
-    public void setAdvertisementImage(Image advertisementImage) {
+    public void setAdvertisementImage( Image advertisementImage) {
         this.advertisementImage = advertisementImage;
     }
 
