@@ -11,12 +11,6 @@ import java.util.Date;
 public class Item extends Advertisement {
 
     double price;
-    private String name;
-    private Date uploadDate;
-    private String description;
-    private Image advertisementImage;
-    private int ID;
-    private int categoryType;
 
     public Item( double price, String name, int ID, int categoryType, Date uploadDate) {
 
