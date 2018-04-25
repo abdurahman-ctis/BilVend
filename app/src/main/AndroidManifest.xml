@@ -29,7 +29,7 @@
         <activity android:name=".ChatPage" />
         <activity
             android:name=".adPublishingPage"
-            android:label="@string/title_activity_ad_publishing_page"
+            android:label="New Advertisement"
             android:theme="@style/AppTheme"></activity>
     </application>
 
