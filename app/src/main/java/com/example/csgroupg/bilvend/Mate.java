@@ -14,27 +14,29 @@ public class Mate extends Advertisement {
     boolean dormOrFlat;
     String address;
     Location location;
-    boolean type;
 
-    public Item( double price, String name, int ID, int categoryType, Date uploadDate) {
+    public Mate( int roommateNo, boolean dormOrFlat, String address, Location location, String name, int ID, int categoryType, Date uploadDate) {
 
-        super( name, uploadDate, description, advertisementImage, ID, categoryType);
-
+        super( name, ID, categoryType, uploadDate);
+        setRoommateNo( roommateNo);
+        setPropertyType( dormOrFlat);
+        setAdress( address);
+        setLocation( location);
     }
 
-    public setRoommateNo( int roommateNo) {
+    public void setRoommateNo( int roommateNo) {
         this.roommateNo = roommateNo;
     }
 
-    public getRoommateNo() {
+    public int getRoommateNo() {
         return roommateNo;
     }
 
-    public setLocation( Location location) {
+    public void setLocation( Location location) {
         this.location = location;
     }
 
-    public getLocation() {
+    public Location getLocation() {
         return location;
     }
 
@@ -51,11 +53,11 @@ public class Mate extends Advertisement {
      * @param type
      */
     public void setPropertyType( boolean type) {
-        this.type = type;
+        this.dorOrFlat = dormOrFlat;
     }
 
     public String getPropertyType() {
-        if( !type )
+        if( !dormOrFlat )
             return "Dorm";
         else
             return "Flat";

@@ -14,9 +14,8 @@ public class Item extends Advertisement {
 
     public Item( double price, String name, int ID, int categoryType, Date uploadDate) {
 
-        super( name, uploadDate, description, advertisementImage, ID, categoryType);
+        super( name, ID, categoryType, uploadDate,);
         setPrice( price);
-
     }
 
     public void setPrice( int price) {
