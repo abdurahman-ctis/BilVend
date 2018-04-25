@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,8 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 
 public class loginPage extends AppCompatActivity {
 
@@ -29,7 +33,7 @@ public class loginPage extends AppCompatActivity {
     // constants
     static final String CHAT_PREFS = "ChatPrefs";
     static final String DISPLAY_NAME_KEY = "username";
-//sef
+
     // properties
     TextView signUp;
     EditText email;
@@ -56,6 +60,7 @@ public class loginPage extends AppCompatActivity {
         noRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                anonymousEntrance();
                 startActivity(new Intent(getApplicationContext(),mainPage.class));
             }
         });
@@ -89,7 +94,8 @@ public class loginPage extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful())
                                 {
-                                    saveDisplayName();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    saveDisplayName(user);
                                     startActivity(new Intent(getApplicationContext(), mainPage.class));
                                 }
                                 else {
@@ -102,10 +108,29 @@ public class loginPage extends AppCompatActivity {
         });
     }
 
-    private void saveDisplayName() {
-        String current_user_id = mAuth.getCurrentUser().getUid();
+    private void saveDisplayName(FirebaseUser user) {
+        String current_user_id = user.getUid();
         String displayName = FirebaseDatabase.getInstance().getReference().child("Users").child(current_user_id).child("Username").getKey();
         SharedPreferences prefs = getSharedPreferences(CHAT_PREFS, 0);
         prefs.edit().putString(DISPLAY_NAME_KEY, displayName).apply();
+    }
+    public void anonymousEntrance()
+    {
+        mAuth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
     }
 }

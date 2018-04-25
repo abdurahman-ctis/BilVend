@@ -1,10 +1,12 @@
 package com.example.csgroupg.bilvend;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -32,6 +34,10 @@ public class registerPage extends AppCompatActivity {
     private CardView register;
     private FirebaseAuth mAuth;
     private User user;
+    private ProgressDialog dialog;
+    private long tStart;
+    private long tEnd;
+    private boolean verified;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +49,12 @@ public class registerPage extends AppCompatActivity {
         password = findViewById(R.id.password);
         repassword = findViewById(R.id.re_enter_password);
         register = findViewById(R.id.cardView);
+        dialog = new ProgressDialog(registerPage.this);
+        verified = true;
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.show();
                 createAccount();
             }
         });
@@ -58,41 +67,12 @@ public class registerPage extends AppCompatActivity {
         list.add(email);
         list.add(password);
         list.add(repassword);
-        user = new User(name.getText().toString(), surname.getText().toString(), email.toString().substring(0, 14));
-        for(EditText e : list)
+        while (!checkFilled(list))
         {
-            if(e.getText().toString().isEmpty())
-            {
-                Toast.makeText(this, "Pleas fully enter required information", Toast.LENGTH_SHORT).show();
-                e.requestFocus();
-                return;
-            }
-        }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches())
-        {
-            Toast.makeText(getApplicationContext(), "Please enter a valid e-mail", Toast.LENGTH_SHORT).show();
-            email.requestFocus();
+            register.setEnabled(true);
             return;
         }
-//        if ( !email.toString().substring(email.toString().length() - 14, email.toString().length()).equals("bilkent.edu.tr"))
-//        {
-//            Toast.makeText(getApplicationContext(), "Please enter your Bilkent e-mail address", Toast.LENGTH_SHORT).show();
-//            email.requestFocus();
-//            return;
-//        }
-        mAuth.fetchProvidersForEmail(email.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-                        boolean check = task.getResult().getProviders().isEmpty();
-                        if (!check)
-                        {
-                            Toast.makeText(getApplicationContext(), "Already registered with this e-mail", Toast.LENGTH_SHORT).show();
-                            email.requestFocus();
-                            return;
-                        }
-                    }
-                });
+        user = new User(name.getText().toString(), surname.getText().toString(), email.getText().toString().substring(0, email.getText().toString().indexOf('@')));
         mAuth.createUserWithEmailAndPassword(email.getText().toString().trim(),password.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -101,7 +81,6 @@ public class registerPage extends AppCompatActivity {
                         {
                             String current_user_id = mAuth.getCurrentUser().getUid();
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(current_user_id);
-                            FirebaseUser currentUser = mAuth.getCurrentUser();
                             Map newPost = new HashMap();
                             newPost.put("Name", user.getName());
                             newPost.put("Surname", user.getSurname());
@@ -119,5 +98,43 @@ public class registerPage extends AppCompatActivity {
                     }
                 });
 
+    }
+    public boolean checkFilled( ArrayList<EditText> list)
+    {
+        for(EditText e : list)
+        {
+            if(e.getText().toString().isEmpty())
+            {
+                Toast.makeText(this, "Please fully enter required information", Toast.LENGTH_SHORT).show();
+                e.requestFocus();
+                return false;
+            }
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches())
+        {
+            Toast.makeText(getApplicationContext(), "Please enter a valid e-mail", Toast.LENGTH_SHORT).show();
+            email.requestFocus();
+            return false;
+        }
+        if ( !email.getText().toString().substring(email.getText().toString().length() - 14, email.getText().toString().length()).equals("bilkent.edu.tr"))
+        {
+            Toast.makeText(getApplicationContext(), "Please enter your Bilkent e-mail address", Toast.LENGTH_SHORT).show();
+            email.requestFocus();
+            return false;
+        }
+        mAuth.fetchProvidersForEmail(email.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                        boolean check = task.getResult().getProviders().isEmpty();
+                        if (!check)
+                        {
+                            Toast.makeText(getApplicationContext(), "Already registered with this e-mail", Toast.LENGTH_SHORT).show();
+                            email.requestFocus();
+                            return;
+                        }
+                    }
+                });
+        return true;
     }
 }

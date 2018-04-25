@@ -20,7 +20,17 @@
         <activity
             android:name=".mainPage"
             android:label="@string/BilVend"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".adPage"
+            android:label="@string/title_activity_ad_page"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".inboxPage" />
+        <activity android:name=".ChatPage" />
+        <activity
+            android:name=".adPublishingPage"
+            android:label="@string/title_activity_ad_publishing_page"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/signup"
-        android:layout_marginStart="66dp"
+        android:layout_marginStart="60dp"
         android:text="@string/noAccount"
         android:textColor="@android:color/darker_gray" />
 
@@ -51,9 +51,8 @@
         android:id="@+id/signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_alignEnd="@+id/Email"
         android:layout_below="@+id/cardView2"
-        android:layout_marginEnd="43dp"
         android:text="@string/signup"
         android:textColor="@android:color/white" />
 
@@ -100,8 +99,8 @@
         android:id="@+id/noRegistration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/cardView2"
         android:layout_below="@+id/noAcc"
+        android:layout_toStartOf="@+id/signup"
         android:text="@string/noRegistration"
         android:textColor="@android:color/white" />
 
