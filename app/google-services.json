@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "864967157699-c5h1ejk10qv2712omlfjn6rah3lpnlfr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.csgroupg.bilvend",
+            "certificate_hash": "45aa87937a9967c99025cd03d7f0dc00b1798f3c"
+          }
+        },
+        {
           "client_id": "864967157699-g7sn7e8799d2205pjeg0s8cb1tnene23.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
