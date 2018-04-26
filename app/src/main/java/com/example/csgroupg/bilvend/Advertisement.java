@@ -1,27 +1,29 @@
 package com.example.csgroupg.bilvend;
 
 import android.media.Image;
+import android.widget.ImageView;
+
 import java.util.Date;
 
 public abstract class Advertisement {
     //properties
-    private String name;
+    private String title;
     private Date uploadDate;
     private String description;
-    private Image advertisementImage;
+    private ImageView advertisementImage;
     private int ID;
     private int categoryType;
 
     //constructor
-    public Advertisement( String name, int ID, int categoryType, Date uploadDate) {
-        this.name = name;
+    public Advertisement(String name, int ID, int categoryType, Date uploadDate, ImageView advertisementImage) {
+        this.title = name;
         this.ID = ID;
         this.categoryType = categoryType;
         this.uploadDate = uploadDate;
     }
 
-    public Advertisement( String name) {
-        this.name = name;
+    public Advertisement( String title) {
+        this.title = title;
     }
 
     //methods
@@ -33,12 +35,12 @@ public abstract class Advertisement {
         return ID;
     }
 
-    public void setName( String name) {
-        this.name = name;
+    public void setTitle( String title) {
+        this.title = this.title;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public void setUploadDate( Date uploadDate) {
@@ -65,11 +67,11 @@ public abstract class Advertisement {
         return categoryType;
     }
 
-    public void setAdvertisementImage( Image advertisementImage) {
+    public void setAdvertisementImage( ImageView advertisementImage) {
         this.advertisementImage = advertisementImage;
     }
 
-    public Image getAdvertisementImage() {
+    public ImageView getAdvertisementImage() {
         return advertisementImage;
     }
 }

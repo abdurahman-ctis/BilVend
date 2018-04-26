@@ -1,6 +1,8 @@
 package com.example.csgroupg.bilvend;
 
 import android.media.Image;
+import android.support.annotation.StringDef;
+import android.widget.ImageView;
 
 import java.util.Date;
 
@@ -11,21 +13,17 @@ import java.util.Date;
 public class Item extends Advertisement {
 
     double price;
-    private String name;
-    private Date uploadDate;
     private String description;
-    private Image advertisementImage;
-    private int ID;
-    private int categoryType;
+    private ImageView advertisementImage;
 
-    public Item( double price, String name, int ID, int categoryType, Date uploadDate) {
+    public Item(String name, int ID, int categoryType, Date uploadDate, ImageView advertisementImage) {
 
-        super( name, uploadDate, description, advertisementImage, ID, categoryType);
-        setPrice( price);
+        super( name, ID, categoryType, uploadDate, advertisementImage);
+        setPrice(price);
 
     }
 
-    public void setPrice( int price) {
+    public void setPrice( double price) {
         this.price = price;
     }
     public double getPrice() {

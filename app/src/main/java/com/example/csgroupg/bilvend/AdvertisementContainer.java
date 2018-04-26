@@ -78,7 +78,7 @@ public class AdvertisementContainer
 
         for(int i = 0 ; i < container.size() ; i++){
 
-            if(word == container.get(i).getName())relativeness = relativeness + 10;
+            if(word == container.get(i).getTitle())relativeness = relativeness + 10;
             if(word == container.get(i).getDescription())relativeness = relativeness + 5;
 
             if(relativeness < 10)relativeAds.add(container.get(i));
