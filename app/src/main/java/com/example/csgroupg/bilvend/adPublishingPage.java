@@ -1,18 +1,23 @@
 package com.example.csgroupg.bilvend;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,6 +40,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,11 +50,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 
 public class adPublishingPage extends AppCompatActivity{
 
     private final String[] CATEGORIES = {"Categories", "Books", "Notes","Household","Electronic devices", "Roommate","Others"};
+    private final int REQUEST_CAMERA = 1;
+    private final int SELECT_FILE = 0;
 
     private ImageButton publish;
     private FloatingActionButton camera;
@@ -58,8 +69,6 @@ public class adPublishingPage extends AppCompatActivity{
     private ArrayList<EditText> list;
     private Advertisement mItem;
     private Spinner spinner;
-    private int REQUEST_CAMERA = 1;
-    private int SELECT_FILE = 0;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference mReference;
@@ -82,11 +91,10 @@ public class adPublishingPage extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ID = Integer.parseInt(String.valueOf(dataSnapshot.child("Total number of advertisements").getValue(Long.class))) + 1;
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(),"Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -187,7 +195,6 @@ public class adPublishingPage extends AppCompatActivity{
         mStorageRef.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
             }
         });
 
@@ -228,10 +235,9 @@ public class adPublishingPage extends AppCompatActivity{
         {
             if ( requestCode == REQUEST_CAMERA)
             {
-                Bundle bundle = data.getExtras();
-                Bitmap bmp = (Bitmap) bundle.get("data");
-                imageOfItem.setImageBitmap(bmp);
-                imageOfItem.setImageURI(data.getData());
+//                Bundle bundle = data.getExtras();
+//                Bitmap bmp = (Bitmap) bundle.get("data");
+//                imageOfItem.setImageBitmap(bmp);
             }
             else if ( requestCode == SELECT_FILE)
             {
@@ -239,6 +245,14 @@ public class adPublishingPage extends AppCompatActivity{
                 imageOfItem.setImageURI(mUri);
             }
         }
+    }
+
+
+    private Uri getImageUri(Context context, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
 }

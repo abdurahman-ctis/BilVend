@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -70,20 +71,14 @@ public class registerPage extends AppCompatActivity {
             register.setEnabled(true);
             return;
         }
-        user = new User(name.getText().toString(), surname.getText().toString(), email.getText().toString().substring(0, email.getText().toString().indexOf('@')));
+        user = new User(name.getText().toString(), surname.getText().toString(), email.getText().toString());
         mAuth.createUserWithEmailAndPassword(email.getText().toString().trim(),password.getText().toString().trim())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful())
                         {
-                            String current_user_id = mAuth.getCurrentUser().getUid();
-                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(current_user_id);
-                            Map newPost = new HashMap();
-                            newPost.put("Name", user.getName());
-                            newPost.put("Surname", user.getSurname());
-                            newPost.put("Username", user.getUsername());
-                            databaseReference.setValue(newPost);
+                            user.saveToFirebase(mAuth.getCurrentUser());
                             Toast.makeText(getApplicationContext(), "Registered Succesfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), mainPage.class));
                         }
